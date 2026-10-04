@@ -1,0 +1,21 @@
+services:
+  ec2:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: local-ec2:latest
+    container_name: local-ec2
+    hostname: local-ec2
+    ports:
+      - "2222:22"
+      - "8090:80"
+    volumes:
+      - ./app:/opt/myapp
+      - ./nginx/myapp.conf:/tmp/nginx-myapp.conf:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

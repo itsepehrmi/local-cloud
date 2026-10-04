@@ -1,0 +1,9 @@
+# Add this block to ~/.ssh/config
+
+Host local-cloud
+    HostName 127.0.0.1
+    Port 2222
+    User deploy
+    IdentifyFile ~/devops-projects/local-cloud/ssh/id_ec2
+    StricHostKeyChecking no
+    UserKnownHostsFile /dev/null

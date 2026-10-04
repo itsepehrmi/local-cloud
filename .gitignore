@@ -1,0 +1,23 @@
+# SSH private keys - NEVER commit
+ssh/id_ec2
+ssh/*.key
+ssh/id_rsa
+
+# Python
+app/venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Editor
+*.swp
+*~
+
+# OS
+.DS_Store
+
+# Docker
+.docker/

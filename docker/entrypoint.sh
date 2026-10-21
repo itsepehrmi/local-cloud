@@ -14,20 +14,8 @@ mkdir -p /var/run/sshd
 /usr/sbin/sshd
 echo " SSH started OK"
 
-echo "[2/4] Checking Python venv..."
-if [ ! -d /opt/myapp/venv ]; then
-    echo " Creating venv..."
-    cd /opt/myapp
-    python3 -m venv venv
-    echo " Upgrading pip..."
-    ./venv/bin/pip install --upgrade pip
-    echo " Installing requirements..."
-    ./venv/bin/pip install -r requirements.txt
-    echo " Install done. Checking gunicorn:"
-else
-    echo " venv exists, skipping"
-fi
-
+echo "[2/4] Python venv is ready."
+echo "[2/4] Python venv is ready (built in Dockerfile)."
 echo "[3/4] Configuring Nginx..."
 if [ -f /tmp/nginx-myapp.conf ]; then
     cp /tmp/nginx-myapp.conf /etc/nginx/sites-available/myapp
@@ -41,6 +29,15 @@ nginx
 echo " Nginx started OK"
 
 echo "[4/4] Starting gunicorn..."
+echo ""
+echo "========================================"
+echo " ALL services started!"
+echo "========================================"
 cd /opt/myapp
-./venv/bin/gunicorn --workers 2 --bind 127.0.0.1:5000 app:app
+exec opt/venv/bin/gunicorn \
+    --workers 2 \
+    --bind 127.0.0.1:5000 \
+    --access-logfile - \
+    --error-logfile - \
+    app:app
 
